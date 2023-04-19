@@ -17,6 +17,10 @@ export default class TwitchService {
         this.twitchUsername = twitchUsername;
     }
 
+    /**
+     *
+     * @returns twitch api access token
+     */
     private async getAccessToken(): Promise<string> {
         let data: any;
         const headers = {
@@ -36,13 +40,9 @@ export default class TwitchService {
         // data = await res.json();
 
         axios
-            .post(
-                `${TWITCH_GET_TOKEN_URL}`,
-                {},
-                {
-                    headers
-                }
-            )
+            .post(`${TWITCH_GET_TOKEN_URL}`, body, {
+                headers
+            })
             .then((data) => {
                 data = data;
             })
@@ -53,6 +53,10 @@ export default class TwitchService {
         return data?.access_token;
     }
 
+    /**
+     *
+     * @returns boolean if streamer is live
+     */
     public async isStreamerLive(): Promise<boolean> {
         const Token = await this.getAccessToken();
 
