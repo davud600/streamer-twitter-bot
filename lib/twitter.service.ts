@@ -1,10 +1,4 @@
 import Twit from "twit";
-import {
-    TWITTER_CONSUMER_KEY,
-    TWITTER_CONSUMER_SECRET,
-    TWITTER_ACCESS_TOKEN_KEY,
-    TWITTER_ACCESS_TOKEN_SECRET
-} from "./config/env";
 import TwitterServiceParams, {
     TwitchLink
 } from "./interfaces/twitter.params.interface";
@@ -37,13 +31,17 @@ export default class TwitterService {
         twitchChannelLink,
         earlyStreamTextOptions,
         lateStreamTextOptions,
-        normalStreamTextOptions
+        normalStreamTextOptions,
+        twitterConsumerKey,
+        twitterConsumerSecret,
+        twitterAccessTokenKey,
+        twitterAccessTokenSecret
     }: TwitterServiceParams) {
         const T = new Twit({
-            consumer_key: TWITTER_CONSUMER_KEY as string,
-            consumer_secret: TWITTER_CONSUMER_SECRET as string,
-            access_token: TWITTER_ACCESS_TOKEN_KEY as string,
-            access_token_secret: TWITTER_ACCESS_TOKEN_SECRET as string
+            consumer_key: twitterConsumerKey,
+            consumer_secret: twitterConsumerSecret,
+            access_token: twitterAccessTokenKey,
+            access_token_secret: twitterAccessTokenSecret
         });
 
         this.tweetStatus = tweetStatus;

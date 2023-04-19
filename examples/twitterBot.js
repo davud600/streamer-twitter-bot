@@ -1,7 +1,9 @@
 import StreamerTwitterBot from "../lib";
 
 const twitchServiceParams = {
-    twitchUsername: "gentij"
+    twitchUsername: "gentij",
+    twitchClientId: "",
+    twitchClientSecret: ""
 };
 
 const twitterServiceParams = {
@@ -17,7 +19,11 @@ const twitterServiceParams = {
         "Rip sleep schedule.",
         "Grinding no sleep.",
         "Late stream :D."
-    ]
+    ],
+    twitterConsumerKey: "",
+    twitterConsumerSecret: "",
+    twitterAccessTokenKey: "",
+    twitterAccessTokenSecret: ""
 };
 
 const streamerTwitterBot = new StreamerTwitterBot({

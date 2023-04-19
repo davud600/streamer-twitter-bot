@@ -1,9 +1,3 @@
-import {
-    TWITCH_CLIENT_ID,
-    TWITCH_CLIENT_SECRET,
-    TWITCH_GET_TOKEN_URL,
-    TWITCH_API_URL
-} from "./config/env";
 import TwitchServiceParams from "./interfaces/twitch.params.interface";
 import axios from "axios";
 
@@ -13,8 +7,26 @@ export default class TwitchService {
      */
     private twitchUsername: string;
 
-    public constructor({ twitchUsername }: TwitchServiceParams) {
+    /**
+     * Twitch keys
+     */
+    private twitchClientId: string;
+    private twitchClientSecret: string;
+
+    /**
+     * Twitch urls
+     */
+    private twitchGetTokenUrl: string = "https://id.twitch.tv/oauth2/token";
+    private twitchApiUrl: string = "https://api.twitch.tv/helix/streams";
+
+    public constructor({
+        twitchUsername,
+        twitchClientId,
+        twitchClientSecret
+    }: TwitchServiceParams) {
         this.twitchUsername = twitchUsername;
+        this.twitchClientId = twitchClientId;
+        this.twitchClientSecret = twitchClientSecret;
     }
 
     /**
@@ -27,8 +39,8 @@ export default class TwitchService {
             "Content-Type": "application/json"
         };
         const body = {
-            client_id: TWITCH_CLIENT_ID,
-            client_secret: TWITCH_CLIENT_SECRET,
+            client_id: this.twitchClientId,
+            client_secret: this.twitchClientSecret,
             grant_type: "client_credentials"
         };
 
@@ -40,7 +52,7 @@ export default class TwitchService {
         // data = await res.json();
 
         axios
-            .post(`${TWITCH_GET_TOKEN_URL}`, body, {
+            .post(`${this.twitchGetTokenUrl}`, body, {
                 headers
             })
             .then((data) => {
@@ -63,7 +75,7 @@ export default class TwitchService {
         let data: any;
         const headers: any = {
             "Content-Type": "application/json",
-            "Client-Id": TWITCH_CLIENT_ID,
+            "Client-Id": this.twitchClientId,
             Authorization: `Bearer ${Token}`
         };
 
@@ -76,7 +88,7 @@ export default class TwitchService {
         // data = await res.json();
 
         axios
-            .get(`${TWITCH_API_URL}?user_login=${this.twitchUsername}`, {
+            .get(`${this.twitchApiUrl}?user_login=${this.twitchUsername}`, {
                 headers
             })
             .then((data) => {

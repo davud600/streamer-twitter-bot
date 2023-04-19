@@ -4,6 +4,10 @@ export default interface TwitterServiceParams {
     earlyStreamTextOptions?: string[];
     lateStreamTextOptions?: string[];
     normalStreamTextOptions?: string[];
+    twitterConsumerKey: string;
+    twitterConsumerSecret: string;
+    twitterAccessTokenKey: string;
+    twitterAccessTokenSecret: string;
 }
 
 export type TwitchLink = `${"https://www.twitch.tv/"}${string}`;
