@@ -39,54 +39,63 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var node_fetch_1 = __importDefault(require("node-fetch"));
-var env_1 = require("./config/env");
+var axios_1 = __importDefault(require("axios"));
 var TwitchService = /** @class */ (function () {
     function TwitchService(_a) {
-        var twitchUsername = _a.twitchUsername;
+        var twitchUsername = _a.twitchUsername, twitchClientId = _a.twitchClientId, twitchClientSecret = _a.twitchClientSecret;
+        /**
+         * Twitch urls
+         */
+        this.twitchGetTokenUrl = "https://id.twitch.tv/oauth2/token";
+        this.twitchApiUrl = "https://api.twitch.tv/helix/streams";
         this.twitchUsername = twitchUsername;
+        this.twitchClientId = twitchClientId;
+        this.twitchClientSecret = twitchClientSecret;
     }
+    /**
+     *
+     * @returns twitch api access token
+     */
     TwitchService.prototype.getAccessToken = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data, headers, body, res, e_1;
+            var data, headers, body;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        headers = {
-                            "Content-Type": "application/json"
-                        };
-                        body = {
-                            client_id: env_1.TWITCH_CLIENT_ID,
-                            client_secret: env_1.TWITCH_CLIENT_SECRET,
-                            grant_type: "client_credentials"
-                        };
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, (0, node_fetch_1.default)("".concat(env_1.TWITCH_GET_TOKEN_URL), {
-                                method: "POST",
-                                body: JSON.stringify(body),
-                                headers: headers
-                            })];
-                    case 2:
-                        res = _a.sent();
-                        return [4 /*yield*/, res.json()];
-                    case 3:
-                        data = _a.sent();
-                        return [3 /*break*/, 5];
-                    case 4:
-                        e_1 = _a.sent();
-                        console.error(e_1);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/, data === null || data === void 0 ? void 0 : data.access_token];
-                }
+                headers = {
+                    "Content-Type": "application/json"
+                };
+                body = {
+                    client_id: this.twitchClientId,
+                    client_secret: this.twitchClientSecret,
+                    grant_type: "client_credentials"
+                };
+                // const res = await fetch(`${TWITCH_GET_TOKEN_URL}`, {
+                //     method: "POST",
+                //     body: JSON.stringify(body),
+                //     headers
+                // });
+                // data = await res.json();
+                axios_1.default
+                    .post("".concat(this.twitchGetTokenUrl), body, {
+                    headers: headers
+                })
+                    .then(function (data) {
+                    data = data;
+                })
+                    .catch(function (e) {
+                    console.error(e);
+                });
+                return [2 /*return*/, data === null || data === void 0 ? void 0 : data.access_token];
             });
         });
     };
+    /**
+     *
+     * @returns boolean if streamer is live
+     */
     TwitchService.prototype.isStreamerLive = function () {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var Token, data, headers, res, e_2, isLive;
+            var Token, data, headers, isLive;
             var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -95,26 +104,26 @@ var TwitchService = /** @class */ (function () {
                         Token = _b.sent();
                         headers = {
                             "Content-Type": "application/json",
-                            "Client-Id": env_1.TWITCH_CLIENT_ID,
+                            "Client-Id": this.twitchClientId,
                             Authorization: "Bearer ".concat(Token)
                         };
-                        _b.label = 2;
-                    case 2:
-                        _b.trys.push([2, 5, , 6]);
-                        return [4 /*yield*/, (0, node_fetch_1.default)("".concat(env_1.TWITCH_API_URL, "?user_login=").concat(this.twitchUsername), {
-                                headers: headers
-                            })];
-                    case 3:
-                        res = _b.sent();
-                        return [4 /*yield*/, res.json()];
-                    case 4:
-                        data = _b.sent();
-                        return [3 /*break*/, 6];
-                    case 5:
-                        e_2 = _b.sent();
-                        console.error(e_2);
-                        return [3 /*break*/, 6];
-                    case 6:
+                        // const res = await fetch(
+                        //     `${TWITCH_API_URL}?user_login=${this.twitchUsername}`,
+                        //     {
+                        //         headers
+                        //     }
+                        // );
+                        // data = await res.json();
+                        axios_1.default
+                            .get("".concat(this.twitchApiUrl, "?user_login=").concat(this.twitchUsername), {
+                            headers: headers
+                        })
+                            .then(function (data) {
+                            data = data;
+                        })
+                            .catch(function (e) {
+                            console.error(e);
+                        });
                         isLive = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.find(function (s) { return s.user_login === _this.twitchUsername.toLocaleLowerCase(); });
                         return [2 /*return*/, isLive !== null && isLive !== undefined];
                 }

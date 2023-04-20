@@ -1,4 +1,4 @@
-import TwitchServiceParams from "./interfaces/twitch.params.interface";
+import TwitchServiceParams from "../interfaces/twitch.params.interface";
 import axios from "axios";
 
 export default class TwitchService {

@@ -49,13 +49,13 @@ var StreamerTwitterBot = /** @class */ (function () {
          * Default set to one minute
          */
         this.intervalTimeMillisec = 60 * 1000;
-        this.amountOfhoursLive = 0;
+        this.timeLive = 0;
         this.initTwitchService(twitchServiceParams);
         this.initTwitterService(twitterServiceParams);
         this.intervalTimeMillisec = intervalTimeMillisec;
     }
     /**
-     * Starts loop to run program
+     * Starts loop
      */
     StreamerTwitterBot.prototype.start = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -78,6 +78,7 @@ var StreamerTwitterBot = /** @class */ (function () {
                             this.wasLive = true;
                         }
                         else if (this.isLive && this.wasLive) {
+                            // has been live for some time
                         }
                         else if (!this.isLive && this.wasLive) {
                             this.wasLive = false;

@@ -40,15 +40,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var twit_1 = __importDefault(require("twit"));
-var env_1 = require("./config/env");
 var TwitterService = /** @class */ (function () {
     function TwitterService(_a) {
-        var tweetStatus = _a.tweetStatus, twitchChannelLink = _a.twitchChannelLink, earlyStreamTextOptions = _a.earlyStreamTextOptions, lateStreamTextOptions = _a.lateStreamTextOptions, normalStreamTextOptions = _a.normalStreamTextOptions;
+        var tweetStatus = _a.tweetStatus, twitchChannelLink = _a.twitchChannelLink, earlyStreamTextOptions = _a.earlyStreamTextOptions, lateStreamTextOptions = _a.lateStreamTextOptions, normalStreamTextOptions = _a.normalStreamTextOptions, twitterConsumerKey = _a.twitterConsumerKey, twitterConsumerSecret = _a.twitterConsumerSecret, twitterAccessTokenKey = _a.twitterAccessTokenKey, twitterAccessTokenSecret = _a.twitterAccessTokenSecret;
         var T = new twit_1.default({
-            consumer_key: env_1.TWITTER_CONSUMER_KEY,
-            consumer_secret: env_1.TWITTER_CONSUMER_SECRET,
-            access_token: env_1.TWITTER_ACCESS_TOKEN_KEY,
-            access_token_secret: env_1.TWITTER_ACCESS_TOKEN_SECRET
+            consumer_key: twitterConsumerKey,
+            consumer_secret: twitterConsumerSecret,
+            access_token: twitterAccessTokenKey,
+            access_token_secret: twitterAccessTokenSecret
         });
         this.tweetStatus = tweetStatus;
         this.twitchChannelLink = twitchChannelLink;

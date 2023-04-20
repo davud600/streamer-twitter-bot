@@ -1,7 +1,7 @@
 import Twit from "twit";
 import TwitterServiceParams, {
     TwitchLink
-} from "./interfaces/twitter.params.interface";
+} from "../interfaces/twitter.params.interface";
 
 export default class TwitterService {
     /**

@@ -1,6 +1,6 @@
-import StreamerTwitterBotParams from "./interfaces/streamer-twitter-bot.interface";
-import TwitchServiceParams from "./interfaces/twitch.params.interface";
-import TwitterServiceParams from "./interfaces/twitter.params.interface";
+import StreamerTwitterBotParams from "../interfaces/streamer-twitter-bot.interface";
+import TwitchServiceParams from "../interfaces/twitch.params.interface";
+import TwitterServiceParams from "../interfaces/twitter.params.interface";
 import TwitchService from "./twitch.service";
 import TwitterService from "./twitter.service";
 
@@ -18,7 +18,7 @@ export default class StreamerTwitterBot {
     private isLive: boolean;
     private timeLive = 0;
 
-    constructor({
+    public constructor({
         twitchServiceParams,
         twitterServiceParams,
         intervalTimeMillisec
