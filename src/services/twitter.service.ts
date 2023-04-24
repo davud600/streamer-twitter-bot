@@ -17,14 +17,14 @@ export default class TwitterService {
     /**
      * Twitch channel link
      */
-    private twitchChannelLink: TwitchLink | null;
+    private twitchChannelLink: TwitchLink | null | undefined;
 
     /**
      * Bonus text depending on stream schedule
      */
-    private earlyStreamTextOptions: string[] | null;
-    private lateStreamTextOptions: string[] | null;
-    private normalStreamTextOptions: string[] | null;
+    private earlyStreamTextOptions: string[] | null | undefined;
+    private lateStreamTextOptions: string[] | null | undefined;
+    private normalStreamTextOptions: string[] | null | undefined;
 
     public constructor({
         tweetStatus,
@@ -37,7 +37,7 @@ export default class TwitterService {
         twitterAccessTokenKey,
         twitterAccessTokenSecret
     }: TwitterServiceParams) {
-        const T = new Twit({
+        this.T = new Twit({
             consumer_key: twitterConsumerKey,
             consumer_secret: twitterConsumerSecret,
             access_token: twitterAccessTokenKey,
@@ -59,11 +59,22 @@ export default class TwitterService {
 
         let randomText = "";
 
-        if (this.lateStreamTextOptions !== null && date.getHours() >= 22)
+        if (
+            this.lateStreamTextOptions !== null &&
+            this.lateStreamTextOptions !== undefined &&
+            date.getHours() >= 22
+        )
             randomText = this.getRandomText(this.lateStreamTextOptions);
-        else if (this.earlyStreamTextOptions !== null && date.getHours() <= 19)
+        else if (
+            this.earlyStreamTextOptions !== null &&
+            this.earlyStreamTextOptions !== undefined &&
+            date.getHours() <= 19
+        )
             randomText = this.getRandomText(this.earlyStreamTextOptions);
-        else if (this.normalStreamTextOptions !== null)
+        else if (
+            this.normalStreamTextOptions !== null &&
+            this.normalStreamTextOptions !== undefined
+        )
             randomText = this.getRandomText(this.normalStreamTextOptions);
 
         this.T.post(

@@ -1,4 +1,4 @@
-const StreamerTwitterBot = require("../build");
+const StreamerTwitterBot = require("../build"); // require("streamer-twitter-bot")
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -10,28 +10,19 @@ const twitchServiceParams = {
 };
 
 const twitterServiceParams = {
-    // tweetStatus: "Gentij is now Streaming Live on Twitch, go watch!"
     tweetStatus: "testing hii guyss cc:",
     twitchChannelLink: "https://www.twitch.tv/gentij",
-    earlyStreamTextOptions: [
-        "Early stream? who is this guy.",
-        "W sleep schedule.",
-        "Early stream :D."
-    ],
-    lateStreamTextOptions: [
-        "Rip sleep schedule.",
-        "Grinding no sleep.",
-        "Late stream :D."
-    ],
+    earlyStreamTextOptions: ["Early stream?"],
+    lateStreamTextOptions: ["Late stream :D."],
     twitterConsumerKey: process.env.TWITTER_CONSUMER_KEY,
     twitterConsumerSecret: process.env.TWITTER_CONSUMER_SECRET,
     twitterAccessTokenKey: process.env.TWITTER_ACCESS_TOKEN_KEY,
     twitterAccessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 };
 
-const streamerTwitterBot = new StreamerTwitterBot({
+const s = new StreamerTwitterBot.default({
     twitchServiceParams,
     twitterServiceParams
 });
 
-streamerTwitterBot.start();
+s.start();

@@ -1,12 +1,10 @@
 import StreamerTwitterBotParams from "../interfaces/streamer-twitter-bot.interface";
-import TwitchServiceParams from "../interfaces/twitch.params.interface";
-import TwitterServiceParams from "../interfaces/twitter.params.interface";
 import TwitchService from "./twitch.service";
 import TwitterService from "./twitter.service";
 
 export default class StreamerTwitterBot {
-    private TwitchService: TwitchService;
-    private TwitterService: TwitterService;
+    private twitchService: TwitchService;
+    private twitterService: TwitterService;
 
     /**
      * Update frequency (increase for less resource consumption)
@@ -14,19 +12,26 @@ export default class StreamerTwitterBot {
      */
     private intervalTimeMillisec: number = 60 * 1000;
 
-    private wasLive: boolean;
-    private isLive: boolean;
-    private timeLive = 0;
+    /**
+     * Keeping track of channel status
+     */
+    private wasLive = false;
+    private isLive = false;
+    private timeLiveMs = 0;
+    private startedLiveTime = Date.now();
 
     public constructor({
         twitchServiceParams,
         twitterServiceParams,
         intervalTimeMillisec
     }: StreamerTwitterBotParams) {
-        this.initTwitchService(twitchServiceParams);
-        this.initTwitterService(twitterServiceParams);
+        this.twitchService = new TwitchService(twitchServiceParams);
+        this.twitterService = new TwitterService(twitterServiceParams);
 
-        this.intervalTimeMillisec = intervalTimeMillisec;
+        if (intervalTimeMillisec !== undefined && intervalTimeMillisec !== null)
+            this.intervalTimeMillisec = intervalTimeMillisec;
+
+        console.log("started omg its working");
     }
 
     /**
@@ -37,14 +42,18 @@ export default class StreamerTwitterBot {
             console.log("Interval Called");
 
             try {
-                this.isLive = await this.TwitchService.isStreamerLive();
+                this.isLive = await this.twitchService.isStreamerLive();
 
                 if (this.isLive && !this.wasLive) {
-                    this.TwitterService.makeTweet();
+                    // stream started
+                    this.twitterService.makeTweet();
                     this.wasLive = true;
+                    this.startedLiveTime = Date.now();
                 } else if (this.isLive && this.wasLive) {
-                    // has been live for some time
+                    // count timeLiveMs
+                    this.timeLiveMs = Date.now() - this.startedLiveTime;
                 } else if (!this.isLive && this.wasLive) {
+                    // stream ended
                     this.wasLive = false;
                 }
             } catch (e: any) {
@@ -58,20 +67,9 @@ export default class StreamerTwitterBot {
     }
 
     /**
-     * Initialise twitch serivce
-     * @param twitchServiceParams Twitch options
+     * Get time streamer has been live for (in milliseconds)
      */
-    private initTwitchService(twitchServiceParams: TwitchServiceParams): void {
-        this.TwitchService = new TwitchService(twitchServiceParams);
-    }
-
-    /**
-     * Initialise twitter service
-     * @param twitterServiceParams Twitter options
-     */
-    private initTwitterService(
-        twitterServiceParams: TwitterServiceParams
-    ): void {
-        this.TwitterService = new TwitterService(twitterServiceParams);
+    public getTimeLive() {
+        return this.timeLiveMs;
     }
 }
