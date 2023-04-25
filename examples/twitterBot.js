@@ -1,4 +1,4 @@
-const StreamerTwitterBot = require("../build"); // require("streamer-twitter-bot")
+const StreamerTwitterBot = require("../lib"); // require("streamer-twitter-bot")
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -25,4 +25,4 @@ const s = new StreamerTwitterBot.default({
     twitterServiceParams
 });
 
-s.start();
+s.start(() => console.log(s.getTimeLive()));

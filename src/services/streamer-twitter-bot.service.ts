@@ -30,18 +30,22 @@ export default class StreamerTwitterBot {
 
         if (intervalTimeMillisec !== undefined && intervalTimeMillisec !== null)
             this.intervalTimeMillisec = intervalTimeMillisec;
-
-        console.log("started omg its working");
     }
 
     /**
      * Starts loop
      */
-    public async start() {
+    public async start(
+        initialCallback: Function | null | undefined,
+        finalCallback: Function | null | undefined
+    ) {
         while (true) {
             console.log("Interval Called");
 
             try {
+                if (initialCallback !== null && initialCallback !== undefined)
+                    initialCallback();
+
                 this.isLive = await this.twitchService.isStreamerLive();
 
                 if (this.isLive && !this.wasLive) {
@@ -56,6 +60,9 @@ export default class StreamerTwitterBot {
                     // stream ended
                     this.wasLive = false;
                 }
+
+                if (finalCallback !== null && finalCallback !== undefined)
+                    finalCallback();
             } catch (e: any) {
                 console.error(e);
             }
